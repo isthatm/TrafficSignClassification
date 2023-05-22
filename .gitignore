@@ -4,3 +4,6 @@ DLvenv/
 .vscode/
 .idea/
 /Traffic_Signs_Recognition.ipynb
+*.docx
+/train_dataset.p
+tempCodeRunnerFile.python
