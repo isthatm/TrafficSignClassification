@@ -7,3 +7,7 @@ DLvenv/
 *.docx
 /train_dataset.p
 tempCodeRunnerFile.python
+src/test.py
+src/Data/
+src/__pycache__/
+requirements.txt
