@@ -11,3 +11,4 @@ src/test.py
 src/Data/
 src/__pycache__/
 requirements.txt
+*.log
