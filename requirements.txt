@@ -1,0 +1,9 @@
+numpy==1.24.2
+pandas==2.0.1
+torch==2.0.1
+scikit-image==0.21.0
+matplotlib==3.7.1
+scikit-learn==9.5.0
+configparser
+shutil
+pickle

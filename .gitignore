@@ -1,0 +1,8 @@
+DLvenv/
+.vscode/
+*.idea/
+tempCodeRunnerFile.python
+Data/
+Results/
+src/__pycache__/
+*.log
