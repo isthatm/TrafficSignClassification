@@ -93,7 +93,7 @@ class ImgAug:
         Augment images by batch
         :param batch_img: [batch, C, H, W]
         :param value: the degree at which the imgs are transformed 
-                      (recommended 0.3 -> 9 pixels)
+                      (recommended 0.3 -> 0.3*32 = 9.6 pixels)
 
         :return: transformed batch [batch, C, H, W]
         """
@@ -148,28 +148,33 @@ class ImgAug:
 class Reporter:
     def __init__(self, file_name):
         self.file_name = file_name
-        self.cols = ["Epoch", "Batch ID", "Margin Loss", "Reconstruction Loss", "Total Loss"]
-        self.epoch, self.batch, self.marg_loss, self.recons_loss, self.total_loss  = [], [], [], [], []
+        self.cols = ["Epoch", "Batch ID", "Margin Loss", "Reconstruction Loss", "Total Loss", "Accuracy"]
+        self.epoch, self.batch, self.marg_loss, self.recons_loss, self.total_loss, self.accuracy  = '', '', '', '', '', ''
            
     def __create_df(self):
-        df = pd.DataFrame(list(
-            zip(self.epoch, self.batch, self.marg_loss, self.recons_loss, self.total_loss)), 
-            columns=self.cols) 
+        data = (self.epoch, self.batch, self.marg_loss, self.recons_loss, self.total_loss, self.accuracy)
+        df = pd.DataFrame([data], columns=self.cols) 
         return df
 
-    def record(self, data: dict) -> None: 
-        self.epoch.append(data['Epoch'])
-        self.batch.append(data['Batch ID'])
-        self.marg_loss.append(data['Loss']['Margin'])
-        self.recons_loss.append(data['Loss']['Recon'])
-        self.total_loss.append(data['Loss']['Total'])
-    
+    def record(self, data: dict,  sheet: str) -> None: 
+        self.epoch = data['Epoch']
+        self.batch = data['Batch ID']
+        self.marg_loss = data['Loss']['Margin']
+        self.recons_loss = data['Loss']['Recon']
+        self.total_loss = data['Loss']['Total']
+        self.accuracy = data["Accuracy"]
+        
         if not os.path.isfile(self.file_name):
-            self.__create_df().to_excel(self.file_name, index=False)
+            self.__create_df().to_excel(self.file_name, sheet_name=sheet ,index=False)
         else:
             with pd.ExcelWriter(
-                self.file_name, 
-                mode="a", 
-                engine="openpyxl", 
-                if_sheet_exists="overlay") as writer:
-                    self.__create_df().to_excel(writer, index=False)
+                        self.file_name, 
+                        mode="a", 
+                        engine="openpyxl", 
+                        if_sheet_exists="overlay") as writer:
+                if sheet in pd.ExcelFile(self.file_name).sheet_names:
+                    self.__create_df().to_excel(writer, sheet_name=sheet, 
+                                                startrow=writer.sheets[sheet].max_row, 
+                                                index=False, header=None)
+                else:
+                    self.__create_df().to_excel(writer, sheet_name=sheet,index=False)
