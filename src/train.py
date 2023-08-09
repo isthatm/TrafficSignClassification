@@ -53,10 +53,10 @@ def train(model, train_loader, optimizer, device, epoch):
         x_batch = x_batch.permute(0, 3, 1, 2) # [batch, C, H, W]
         y_batch_one_hot = torch.nn.functional.one_hot(y_batch.to(torch.int64), num_classes=43)
 
-        # aug_bool = random.randint(0,1)
-        # if aug_bool:
-        #     augmentor = utils.ImgAug(x_batch, 0.3)
-        #     x_batch = augmentor.apply_trans()
+        aug_bool = random.randint(0,1)
+        if aug_bool:
+            augmentor = utils.ImgAug(x_batch, 0.3)
+            x_batch = augmentor.apply_trans()
 
         if device == 'cuda':
             x_batch, y_batch_one_hot = x_batch.to('cuda'), y_batch.to('cuda')
@@ -123,10 +123,7 @@ def data_loader(images,
 
     :return: an iterable object
     """
-    images_tensor = torch.Tensor(images)
-    labels_tensor = torch.Tensor(labels)
-
-    dataset = TensorDataset(images_tensor, labels_tensor)
+    dataset = TensorDataset(images, labels)
     data_loader = DataLoader(dataset, batch_size, shuffle=shuffle)
 
     return data_loader
@@ -143,7 +140,7 @@ if __name__ == '__main__':
     
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     # Reduce learning rate when a metric has stopped improving
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, min_lr=1e-5) 
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, min_lr=1e-6) 
 
     # Prepare dataset
     val_loader = data_loader(val_images, val_labels, batch_size)

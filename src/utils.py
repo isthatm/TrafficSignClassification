@@ -1,6 +1,7 @@
 import pickle
 import random
 import os
+import torch
 import torchvision.transforms as T
 import pandas as pd
 import shutil
@@ -44,15 +45,19 @@ def pickle_data(file, writeColumns=None):
     loading data again (time consuming)
 
     :param file: path to pickle file
-    :param writeColumns (array): variables to be saved to pickle file
+    :param writeColumns (torch.Tensor or np.ndarray): variables to be saved to pickle file
 
     :returns :
-    If writeColumns = None -> tuple(np.ndarray, np.ndarray)
+    If writeColumns = None -> tuple(torch.Tensor)
     """
     if writeColumns is None:
         with open(file, mode="rb") as f:
             dataset = pickle.load(f)
-            return tuple(map(lambda col: dataset[col], ['images', 'labels'])) # lambda(col) where columns are the inputs
+            return tuple(
+                map(lambda col: torch.tensor(dataset[col], dtype=torch.float32) if not type(dataset[col]) == torch.Tensor else dataset[col], 
+                    ['images', 'labels'])
+                )
+                # lambda(col) where columns are the inputs
     else:
         with open(file, mode="wb") as f:
             dataset = pickle.dump({"images": writeColumns[0], "labels": writeColumns[1]}, f)
