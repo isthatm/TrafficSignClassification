@@ -45,7 +45,7 @@ def create_data_dict():
 
 
 def train(model, train_loader, optimizer, device, epoch):
-    log_batch = 10
+    log_batch = 20
     data, report_writer = create_data_dict()
     model.train() # set the model to training mode
 
@@ -76,7 +76,7 @@ def train(model, train_loader, optimizer, device, epoch):
             data["Loss"]["Total"] = total_loss.item()
             data["Accuracy"] = correct_pred*100 # From training batch_images
             report_writer.record(data, sheet="TRAIN")
-            print('Epoch: {}, Batch: {}/{}, Loss: {:.3f}, Accuracy: {:.2f}'
+            print('Epoch: {}, Batch: {}/{}, Loss: {:.4f}, Accuracy: {:.4f}'
                     .format(epoch, batch_idx+1, len(train_loader), total_loss.item(), data["Accuracy"]))
             correct_pred = 0
 
@@ -108,7 +108,7 @@ def test(model, test_loader, device, epoch):
     data["Loss"]["Total"] = loss
     data["Accuracy"] = accuracy
     report_writer.record(data, sheet="TEST")
-    print(f"Epoch {epoch} - Loss: {loss}; Accuracy: {accuracy:.1f} %")
+    print("Epoch {} - Loss: {:.4f}; Accuracy: {:.4f} %". format(epoch, loss, accuracy))
 
     return loss, accuracy
             
