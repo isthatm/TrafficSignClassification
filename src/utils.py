@@ -42,13 +42,12 @@ def pickle_data(file, writeColumns=None):
     """
     Read/Write pickle training/testing data, models to avoid
     loading data again (time consuming)
-    
-    ---Params---
 
-    file: path to pickle file
+    :param file: path to pickle file
+    :param writeColumns (array): variables to be saved to pickle file
 
-    writeColumns (array): variables to be saved to pickle file
-
+    :returns :
+    If writeColumns = None -> tuple(np.ndarray, np.ndarray)
     """
     if writeColumns is None:
         with open(file, mode="rb") as f:

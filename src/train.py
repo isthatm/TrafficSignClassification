@@ -10,9 +10,9 @@ import utils
 import network
 
 # Program starts here if pickle folders are not updated
-train_images, train_labels  = utils.pickle_data(file = './Data/pickled_data/primary32_train_dataset')
-test_images, test_labels  = utils.pickle_data(file = './Data/pickled_data//primary32_test_dataset')
-val_images, val_labels  = utils.pickle_data(file = './Data/pickled_data/primary32_val_dataset')
+train_images, train_labels  = utils.pickle_data(file = './Data/pickled_data/gray32_train_dataset')
+test_images, test_labels  = utils.pickle_data(file = './Data/pickled_data/gray32_test_dataset')
+val_images, val_labels  = utils.pickle_data(file = './Data/pickled_data/gray32_val_dataset')
 
 # Collect hyper params
 config = configparser.ConfigParser()
@@ -45,7 +45,7 @@ def create_data_dict():
 
 
 def train(model, train_loader, optimizer, device, epoch):
-    log_batch = 1
+    log_batch = 10
     data, report_writer = create_data_dict()
     model.train() # set the model to training mode
 
@@ -57,6 +57,7 @@ def train(model, train_loader, optimizer, device, epoch):
         # if aug_bool:
         #     augmentor = utils.ImgAug(x_batch, 0.3)
         #     x_batch = augmentor.apply_trans()
+
         if device == 'cuda':
             x_batch, y_batch_one_hot = x_batch.to('cuda'), y_batch.to('cuda')
 
@@ -75,8 +76,8 @@ def train(model, train_loader, optimizer, device, epoch):
             data["Loss"]["Total"] = total_loss.item()
             data["Accuracy"] = correct_pred*100 # From training batch_images
             report_writer.record(data, sheet="TRAIN")
-            print('Epoch: {}, Batch: {}/{}, Loss: {:.3f}'
-                    .format(epoch, batch_idx+1, len(train_loader), total_loss.item()))
+            print('Epoch: {}, Batch: {}/{}, Loss: {:.3f}, Accuracy: {:.2f}'
+                    .format(epoch, batch_idx+1, len(train_loader), total_loss.item(), data["Accuracy"]))
             correct_pred = 0
 
 def test(model, test_loader, device, epoch):
