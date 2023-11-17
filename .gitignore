@@ -1,6 +1,10 @@
-.ppm
-.csv
-Belgium/
 DLvenv/
 .vscode/
-.idea/
+*.idea/
+tempCodeRunnerFile.python
+Data/
+Results/
+src/__pycache__/
+src/Network_from_scratch
+src/DL_traffic_sign.ipynb
+*.log
