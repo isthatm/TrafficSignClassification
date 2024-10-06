@@ -11,8 +11,8 @@ import network
 
 # Program starts here if pickle folders are not updated
 train_images, train_labels  = utils.pickle_data(file = './Data/pickled_data/gray32_train_dataset')
-test_images, test_labels  = utils.pickle_data(file = './Data/pickled_data/gray32_test_dataset')
-val_images, val_labels  = utils.pickle_data(file = './Data/pickled_data/gray32_val_dataset')
+test_images, test_labels    = utils.pickle_data(file = './Data/pickled_data/gray32_test_dataset')
+val_images, val_labels      = utils.pickle_data(file = './Data/pickled_data/gray32_val_dataset')
 
 # Collect hyper params
 config = configparser.ConfigParser()
