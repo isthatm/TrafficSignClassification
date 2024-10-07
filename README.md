@@ -14,7 +14,10 @@
   </p>
 
 # Results
-To be updated
+- The model was able to reach a peak of 98.15% accuracy at epoch 97 for the validation set
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/6aaac7be-9079-494d-8e29-725545e653d9" width="800">
+</p>
 
 # Refrences
 - This work is inspired by [vamsiramakrishnan/TrafficSignRecognition](https://github.com/vamsiramakrishnan/TrafficSignRecognition) and [chengyangfu/pytorch-vgg-cifar10](https://github.com/chengyangfu/pytorch-vgg-cifar10)
