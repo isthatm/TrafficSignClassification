@@ -18,7 +18,7 @@
 - Thresholding can also be applied to separate the signs from background. Nonetheless, in this dataset this approach isn't feasible since images are taken at different lighting conditions and the traffic signs themselves are distinct from each other. Therefore, this module was discarded eventually. Feel free to apply this module to your dataset if possible to yield better results.
 
 <p align="center">
-    <img src="https://github.com/user-attachments/assets/542825d0-843b-4e59-8ce2-f995b106aff5" width="600">
+    <img src="https://github.com/user-attachments/assets/542825d0-843b-4e59-8ce2-f995b106aff5" width="400">
 </p>
 
 # Architecture
