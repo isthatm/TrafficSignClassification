@@ -1,7 +1,0 @@
-path: /content/drive/MyDrive/TrafficSignData/Vietnam//Object Detection/ # Root dir
-train: images # train images, relative to path
-val: images
-
-# No. classes
-nc: 1
-names: ['traffic_sign']
