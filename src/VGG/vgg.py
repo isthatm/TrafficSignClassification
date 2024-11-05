@@ -11,9 +11,6 @@ import math
 import torch.nn as nn
 from torch.utils.data import DataLoader
 
-# Ensure that the input tensor size is [batch_size, channel, width, heigh]
-# Ensure that the labels are int64
-# Ensure that the ouput of the classfier matches the number of classes
 
 supportedArch = [
     'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn',
@@ -84,10 +81,10 @@ class VGG(nn.Module):
 
         self.classifier = nn.Sequential(
             nn.Dropout(),
-            nn.Linear(1408, 512), # nn.Linear(1408, 512),
+            nn.Linear(1408, 1024), 
             nn.ReLU(True),
             nn.Dropout(),
-            nn.Linear(512, 512),
+            nn.Linear(1024, 512),
             nn.ReLU(True),
             nn.Linear(512, 50),
         )
@@ -101,18 +98,18 @@ class VGG(nn.Module):
     def forward(self, x):
       output = []
       tmpInput = x
+      # 1. VGG blocks
       for layerIdx, layer in enumerate(self.layers):
         current_output = layer(tmpInput)
         output.append(current_output)
         tmpInput = current_output
 
+      # 2. Multiscale Convolutional Network
       output_m1 = torch.cat((self.maxPool (output[1]), output[2]), 1)
       output_m2 = torch.cat((self.maxPool (output_m1), output[3]), 1)
       output_m3 = torch.cat((self.maxPool (output_m2), output[4]), 1)
 
       ouput_pre_classification = output_m3.view(output_m3.size(0), -1)
-      #ouput_pre_classification = output[-1].view(output[-1].size(0), -1)
-      #print(ouput_pre_classification.size())
       final_ouput = self.classifier(ouput_pre_classification)
       return final_ouput
 

@@ -74,8 +74,6 @@ def validate(input, model, criterion):
     return pred.t()
 
 # =============== SETUP ===============
-# 0. Define parameters (criterion, ...)
-
 # 1. Load the YOLOv5 model (object detection)
 # model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
 weights_path = r"C:\Users\Admin\Documents\7. Models\Vietnam\24.08.24_objectdetection\best.pt"
@@ -108,30 +106,22 @@ while cap.isOpened():
 
     # 1. Detect objects in the frame
     results = model(frame)
-    # print(len(results))
 
     # Extract bounding boxes and class names
-    #detections = results.xyxy.numpy()  # Convert to numpy array
-    # detections = results # Use .cpu() if running on GPU
     for res in results:
         #xmin, ymin, xmax, ymax, confidence, class_idx = detection[:6]
         boxes = res.boxes
         probs = res.probs
-        # print(boxes.xyxy)
         obj_rois = boxes.xyxy
+
         if (obj_rois.size(dim=0) > 0):
             detected_objs = crop_rois(obj_rois, frame)
-            # print(detected_objs.dtype)
             processed_batch = preprocessor.preprocess_batch(detected_objs)
-            # print(processed_batch.dtype)
+
+            # 2. Classification
             pred = validate(processed_batch, model_class, criterion)
             # save_batch(TEST_OUTPUT, detected_objs)
-        # # xmin, ymin, xmax, ymax, confidence, class_idx = detection
-        # xmin, ymin, xmax, ymax = boxes.xyxy
-        # confidence = boxes.conf.item()
-        # xmin, ymin, xmax, ymax = int(xmin), int(ymin), int(xmax), int(ymax)
-
-        # # 2. Classification
+        
             print(pred)
         # # Draw the bounding box
             for roi_idx, roi in enumerate(obj_rois):
@@ -149,19 +139,7 @@ while cap.isOpened():
                 cv2.rectangle(frame, (xmin, label_ymin - label_size[1] - 10), (xmin + label_size[0], label_ymin + 10), (0, 255, 0), cv2.FILLED)
                 cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
 
-        # cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
-
-        # # Get the label for the class name and its confidence score
-        # label = f"{confidence:.2f}"
-
-        # # Display the label at the top of the bounding box
-        # label_size, _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 2)
-        # label_ymin = max(ymin, label_size[1] + 10)
-        # cv2.rectangle(frame, (xmin, label_ymin - label_size[1] - 10), (xmin + label_size[0], label_ymin + 10), (0, 255, 0), cv2.FILLED)
-        # cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)
-
         # Visualize the results on the frame
-        #annotated_frame = res.plot()
         # Display the video feed with bounding boxes in a new window
         cv2.imshow('TrafficSignClassification', frame)
 

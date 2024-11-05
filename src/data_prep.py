@@ -8,27 +8,6 @@ import numpy as np
 from torch.utils.data import random_split, DataLoader
 from torchvision import transforms
 
-# # 1. How to load pickled data
-# train_images, train_labels  = utils.pickle_data(file = './Data/pickled_data/primary32_train_dataset')
-# test_images, test_labels    = utils.pickle_data(file = './Data/pickled_data/primary32_test_dataset')
-# val_images, val_labels      = utils.pickle_data(file = './Data/pickled_data/primary32_val_dataset')
-
-# print(type(train_images), type(test_images))
-
-# # 2. How to pickle data
-# grayScale_trans = torchvision.transforms.Grayscale()
-# gray_train_images = grayScale_trans(train_images.permute(0, 3, 1, 2)).permute(0, 2, 3, 1)
-# utils.pickle_data(file = "./Data/pickled_data/gray32_train_dataset", writeColumns = [gray_train_images, train_labels])
-# gray_test_images = grayScale_trans(test_images.permute(0, 3, 1, 2)).permute(0, 2, 3, 1)
-# utils.pickle_data(file = "./Data/pickled_data/gray32_test_dataset", writeColumns = [gray_test_images, test_labels])
-# gray_val_images = grayScale_trans(val_images.permute(0, 3, 1, 2)).permute(0, 2, 3, 1)
-# utils.pickle_data(file = "./Data/pickled_data/gray32_val_dataset", writeColumns = [gray_val_images, val_labels])
-
-# print(type(train_images))
-# img = gray_train_images.permute(0, 2, 3, 1)
-# plt.imshow(img[0, : ,: ,:], cmap='gray')
-# plt.show()
-# print(gray_train_images.size())
 
 def crop_image_from_annotatation():
     # 3. Crop object from yolo-annotated files
@@ -78,12 +57,9 @@ def preprocess_data():
     Load data from a dir with folders whose names are classes labels -> (image tensor, label tensor)
 """
 def load_data_to_tensor():
-    INPUT_DIR  = r"C:\Users\Admin\Documents\6. Data\VietnamSigns\augmented_class" 
     OUTPUT_DIR = r"C:\Users\Admin\Documents\6. Data\VietnamSigns\pickled_augmented_preprocessed"
     OUTPUT_FILENAME  = "colored_augmented_dataset" 
     OUTPUT_FILE_PATH =  os.path.join(OUTPUT_DIR, OUTPUT_FILENAME)
-    #img_tensor, label_tensor = utils.load_data(INPUT_DIR) # images must be preprocessed/have the same size
-    #utils.pickle_data(file = OUTPUT_FILE_PATH, writeColumns = [img_tensor, label_tensor]) # Pickle data
 
     train_images, train_labels  = utils.pickle_data(file = OUTPUT_FILE_PATH) # Read pickled data
 
@@ -102,11 +78,6 @@ def load_data_to_tensor():
         print("SAVING results to {SAVE_DIR}}")
         break
         
-
-    # display_img  = train_images[0]
-    # fomrmat_to_display = display_img.permute(1, 2, 0)
-    # plt.imshow(fomrmat_to_display,cmap='gray')
-    # plt.show()
     print(train_images.size())
     print(train_labels.size())
 
@@ -167,3 +138,26 @@ if __name__ == '__main__':
     #preprocess_data()
     load_data_to_tensor()
     pass
+
+
+# ========== UNUSED ==========
+# # 1. How to load pickled data
+# train_images, train_labels  = utils.pickle_data(file = './Data/pickled_data/primary32_train_dataset')
+# test_images, test_labels    = utils.pickle_data(file = './Data/pickled_data/primary32_test_dataset')
+# val_images, val_labels      = utils.pickle_data(file = './Data/pickled_data/primary32_val_dataset')
+
+
+# # 2. How to pickle data
+# grayScale_trans = torchvision.transforms.Grayscale()
+# gray_train_images = grayScale_trans(train_images.permute(0, 3, 1, 2)).permute(0, 2, 3, 1)
+# utils.pickle_data(file = "./Data/pickled_data/gray32_train_dataset", writeColumns = [gray_train_images, train_labels])
+# gray_test_images = grayScale_trans(test_images.permute(0, 3, 1, 2)).permute(0, 2, 3, 1)
+# utils.pickle_data(file = "./Data/pickled_data/gray32_test_dataset", writeColumns = [gray_test_images, test_labels])
+# gray_val_images = grayScale_trans(val_images.permute(0, 3, 1, 2)).permute(0, 2, 3, 1)
+# utils.pickle_data(file = "./Data/pickled_data/gray32_val_dataset", writeColumns = [gray_val_images, val_labels])
+
+# print(type(train_images))
+# img = gray_train_images.permute(0, 2, 3, 1)
+# plt.imshow(img[0, : ,: ,:], cmap='gray')
+# plt.show()
+# print(gray_train_images.size())

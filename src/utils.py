@@ -301,8 +301,7 @@ class PreProcessing:
       preprocessed_image = []
       idx = 0
       for img_tensor in batch_tensor:
-         # Convert tensor to numpy array
-        #print("{}: {}".format(idx, img_tensor.size()))
+        # Convert tensor to numpy array
         img_np = img_tensor.permute(1, 2, 0).numpy()  # [C, H, W] -> [H, W, C]
 
          # Convert from [0, 1] or [0, 255] to [0, 255] and ensure uint8 type
